@@ -1,10 +1,10 @@
 // src/components/ChatBot.jsx
-import React, { useState } from 'react';
-import './ChatBot.css';
+import React, { useState } from "react";
+import "./ChatBot.css";
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
 
   const addMessage = (role, text) => {
     setMessages((prev) => [...prev, { role, text }]);
@@ -14,26 +14,29 @@ const ChatBot = () => {
     const message = input.trim();
     if (!message) return;
 
-    addMessage('user', message);
-    setInput('');
+    addMessage("user", message);
+    setInput("");
 
     try {
-const response = await fetch('http://localhost:3000/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message }),
-      });
+      const response = await fetch(
+        "https://chatbotusinggeminillm.onrender.com/chat",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message }),
+        }
+      );
 
       const data = await response.json();
-      addMessage('bot', data.reply);
+      addMessage("bot", data.reply);
     } catch (error) {
-      console.error('Error:', error);
-      addMessage('bot', "Sorry, I couldn't connect to the server.");
+      console.error("Error:", error);
+      addMessage("bot", "Sorry, I couldn't connect to the server.");
     }
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') sendMessage();
+    if (e.key === "Enter") sendMessage();
   };
 
   return (
@@ -41,7 +44,7 @@ const response = await fetch('http://localhost:3000/chat', {
       <div id="chat-log">
         {messages.map((msg, index) => (
           <div key={index} className={`message ${msg.role}`}>
-            {msg.role === 'user' ? 'You' : 'Bot'}: {msg.text}
+            {msg.role === "user" ? "You" : "Bot"}: {msg.text}
           </div>
         ))}
       </div>
